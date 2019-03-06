@@ -32,20 +32,22 @@ public class UserInputListener extends ListenerAdapter {
         }
 
         DiscordCommandInfo command = this.discordBot.getCommandFromLine(event.getMessage().getContentRaw());
-        if (command == null || this.discordBot.getPermissionProvider().hasPermissionForCommand(event.getMember(), command.getPermission())) {
-            if (command != null && command.getName().equals("clear")) {
-                this.discordBot.clearChannel(event.getChannel(), new Consumer<TextChannel>() {
-                    @Override
-                    public void accept(TextChannel textChannel) {
-                        textChannel.sendMessage(
-                                new EmbedBuilder()
-                                        .setTitle("Clear")
-                                        .setDescription("The channel was cleared.")
-                                        .setFooter(event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(), event.getAuthor().getAvatarUrl() != null ? event.getAuthor().getAvatarUrl() : event.getAuthor().getDefaultAvatarUrl())
-                                        .build()
-                        ).queue();
-                    }
-                });
+        if (command == null) {
+            if (this.discordBot.getUnknownCommandMessage() != null) {
+                this.discordBot.getUnknownCommandMessage().sendMessage(event.getChannel(), event.getAuthor());
+            }
+            return;
+        }
+
+        if (this.discordBot.getPermissionProvider().hasPermissionForCommand(event.getMember(), command.getPermission())) {
+            if (command.getName().equals("clear")) {
+                this.discordBot.clearChannel(event.getChannel(), (Consumer<TextChannel>) textChannel -> textChannel.sendMessage(
+                        new EmbedBuilder()
+                                .setTitle("Clear")
+                                .setDescription("The channel was cleared.")
+                                .setFooter(event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(), event.getAuthor().getAvatarUrl() != null ? event.getAuthor().getAvatarUrl() : event.getAuthor().getDefaultAvatarUrl())
+                                .build()
+                ).queue());
             } else {
                 this.discordBot.dispatchCommand(new DiscordCommandSender(event.getMember(), this.discordBot), event.getMessage().getContentRaw());
             }

@@ -17,9 +17,11 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import java.awt.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -33,6 +35,16 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                             .append("token", "your api token which you can get from https://discordapp.com/developers/applications")
                             .append("consoleChannelIds", Collections.singleton(123456789))
                             .append("delay_between_queue_polls_ms", 750)
+                            .append("unknownCommandMessage",
+                                    new EmbedMessageConfigEntry(
+                                            true,
+                                            true,
+                                            "Command not found!",
+                                            "Use \"help\" for a list of all commands!",
+                                            Collections.singletonList(new EmbedMessageConfigEntry.Field("Example", "Value", true)),
+                                            true,
+                                            "ff0000")
+                            )
             )
             .append("presence",
                     new SimpleJsonObject()
@@ -55,6 +67,8 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     @Getter
     private JDA jda;
     private String currentToken;
+    @Getter
+    private EmbedMessageConfigEntry unknownCommandMessage;
 
     @Getter
     private DiscordPermissionProvider permissionProvider = new DiscordPermissionProvider();
@@ -137,6 +151,8 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     }
 
     public boolean reloadDiscordConfig() {
+        this.config = SimpleJsonObject.load(CONFIG_PATH);
+
         {
             String token = this.loadConfigEntry("bot", "token").getString("token");
             if (!token.contains(" ")) {
@@ -178,6 +194,8 @@ public abstract class CloudNetDiscordBot<LogEntry> {
 
         this.provider.setDelay(this.loadConfigEntry("bot", "delay_between_queue_polls_ms").getLong("delay_between_queue_polls_ms"));
         this.provider.setChannels(asList(this.loadConfigEntry("bot", "consoleChannelIds").getJsonArray("consoleChannelIds")));
+
+        this.unknownCommandMessage = this.loadConfigEntry("bot", "unknownCommandMessage").getObject("unknownCommandMessage", EmbedMessageConfigEntry.class);
 
         {
             try {
