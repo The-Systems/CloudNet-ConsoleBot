@@ -1,0 +1,94 @@
+{
+  "runtimeModule": true,
+  "group": "de.thesystems.cloudnet.consolebot",
+  "name": "CloudNet-Console-Bot",
+  "version": "1.0",
+  "author": "derrop",
+  "website": "https://nevercold.eu",
+  "description": "CloudNet extension which prints the Console of your Node to your DiscordServer",
+  "main": "de.thesystems.cloudnet3.discord.CloudNet3Bot",
+  "repos": [
+    {
+      "name": "jcenter",
+      "url": "http://jcenter.bintray.com/"
+    },
+    {
+      "name": "spring",
+      "url": "http://repo.spring.io/libs-release/"
+    }
+  ],
+  "dependencies": [
+    {
+      "group": "net.dv8tion",
+      "name": "JDA",
+      "version": "3.8.1_450",
+      "repo": "jcenter"
+    },
+    {
+      "group": "com.google.code.findbugs",
+      "name": "jsr305",
+      "version": "3.0.2",
+      "repo": "maven"
+    },
+    {
+      "group": "org.jetbrains",
+      "name": "annotations",
+      "version": "16.0.1",
+      "repo": "maven"
+    },
+    {
+      "group": "com.neovisionaries",
+      "name": "nv-websocket-client",
+      "version": "2.5",
+      "repo": "maven"
+    },
+    {
+      "group": "com.squareup.okhttp3",
+      "name": "okhttp",
+      "version": "3.8.1",
+      "repo": "maven"
+    },
+    {
+      "group": "com.squareup.okio",
+      "name": "okio",
+      "version": "1.13.0",
+      "repo": "maven"
+    },
+    {
+      "group": "club.minnced",
+      "name": "opus-java",
+      "version": "1.0.2",
+      "repo": "spring"
+    },
+    {
+      "group": "club.minnced",
+      "name": "opus-java-api",
+      "version": "1.0.2",
+      "repo": "spring"
+    },
+    {
+      "group": "club.minnced",
+      "name": "opus-java-natives",
+      "version": "1.0.2",
+      "repo": "spring"
+    },
+    {
+      "group": "org.apache.commons",
+      "name": "commons-collections4",
+      "version": "4.1",
+      "repo": "maven"
+    },
+    {
+      "group": "org.json",
+      "name": "json",
+      "version": "20160810",
+      "repo": "maven"
+    },
+    {
+      "group": "net.sf.trove4j",
+      "name": "trove4j",
+      "version": "3.0.3",
+      "repo": "maven"
+    }
+  ]
+}
