@@ -63,6 +63,15 @@ public abstract class V2CloudNetDiscordBot extends CloudNetDiscordBot<String> {
 
             if (command.getName().equalsIgnoreCase(name)) {
                 result = command;
+            } else {
+                for (String alias : command.getAliases()) {
+                    if (alias.equalsIgnoreCase(name)) {
+                        result = command;
+                        break;
+                    }
+                }
+            }
+            if (result != null) {
                 break;
             }
         }
