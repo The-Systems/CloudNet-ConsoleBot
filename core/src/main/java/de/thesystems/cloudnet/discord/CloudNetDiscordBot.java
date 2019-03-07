@@ -125,7 +125,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     public void clearChannel(TextChannel channel, Consumer<TextChannel> updatedChannelConsumer) {
         long oldId = channel.getIdLong();
         channel.createCopy().queue(newChannel -> {
-            newChannel.getGuild().getController().modifyTextChannelPositions().selectPosition(channel).queue(aVoid -> {
+            newChannel.getGuild().getController().modifyTextChannelPositions().selectPosition((TextChannel) newChannel).moveTo(channel.getPosition()).queue(aVoid -> {
                 channel.delete().queue(aVoid1 -> {
                     this.provider.getChannels().set(this.provider.getChannels().indexOf(oldId), newChannel.getIdLong());
 
