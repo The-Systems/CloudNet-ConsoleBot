@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @AllArgsConstructor
@@ -25,19 +27,23 @@ public class EmbedMessageConfigEntry {
     private String colorHex;
 
     public void sendMessage(MessageChannel channel, User receiver) {
+        this.sendMessage(channel, receiver, null);
+    }
+
+    public void sendMessage(MessageChannel channel, User receiver, Map<String, String> replacements) {
         if (!this.enabled)
             return;
         if (this.embed) {
             EmbedBuilder builder = new EmbedBuilder();
             if (this.title != null && !this.title.isEmpty()) {
-                builder.setTitle(this.title);
+                builder.setTitle(replace(this.title, replacements));
             }
             if (this.description != null && !this.description.isEmpty()) {
-                builder.setDescription(this.description);
+                builder.setDescription(replace(this.description, replacements));
             }
             if (this.fields != null && !this.fields.isEmpty()) {
                 for (Field field : this.fields) {
-                    builder.addField(field.toMessageField());
+                    builder.addField(field.toMessageField(replacements));
                 }
             }
             try {
@@ -58,14 +64,23 @@ public class EmbedMessageConfigEntry {
         }
     }
 
+    private static String replace(String s, Map<String, String> replacements) {
+        if (replacements != null) {
+            for (Map.Entry<String, String> entry : replacements.entrySet()) {
+                s = s.replace(entry.getKey(), entry.getValue());
+            }
+        }
+        return s;
+    }
+
     @AllArgsConstructor
     public static final class Field {
         private String name;
         private String value;
         private boolean inline;
 
-        public MessageEmbed.Field toMessageField() {
-            return new MessageEmbed.Field(this.name, this.value, this.inline);
+        public MessageEmbed.Field toMessageField(Map<String, String> replacements) {
+            return new MessageEmbed.Field(replace(this.name, replacements), replace(this.value, replacements), this.inline);
         }
     }
 

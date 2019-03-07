@@ -60,6 +60,26 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                             .append("users",
                                     newMapByKeys(Arrays.asList("123456789", "*", "name_of_some_group"), s -> new DiscordPermissionUser(s, Arrays.asList("*", "-cloudnet.command.reload")))
                             )
+                            .append("noPermissionMessage",
+                                    new EmbedMessageConfigEntry(
+                                            true,
+                                            true,
+                                            "No Permissions",
+                                            "You are not allowed to use **%command%**",
+                                            Collections.singletonList(new EmbedMessageConfigEntry.Field("Missing Permission", "%permission%", true)),
+                                            true,
+                                            "ff0000")
+                            )
+                            .append("blacklistedOrNotWhitelistedMessage",
+                                    new EmbedMessageConfigEntry(
+                                            true,
+                                            true,
+                                            "No Permissions",
+                                            "You are not allowed to use commands in the console",
+                                            Collections.singletonList(new EmbedMessageConfigEntry.Field("Reason", "You are blacklisted/not whitelisted", true)),
+                                            true,
+                                            "ff0000")
+                            )
             );
 
     private static final Path CONFIG_PATH = Paths.get("modules/CloudNet-Console-Bot/config.json");
@@ -69,6 +89,10 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     private String currentToken;
     @Getter
     private EmbedMessageConfigEntry unknownCommandMessage;
+    @Getter
+    private EmbedMessageConfigEntry noPermissionMessage;
+    @Getter
+    private EmbedMessageConfigEntry blacklistedOrNotWhitelistedMessage;
 
     @Getter
     private DiscordPermissionProvider permissionProvider = new DiscordPermissionProvider();
@@ -196,6 +220,8 @@ public abstract class CloudNetDiscordBot<LogEntry> {
         this.provider.setChannels(asList(this.loadConfigEntry("bot", "consoleChannelIds").getJsonArray("consoleChannelIds")));
 
         this.unknownCommandMessage = this.loadConfigEntry("bot", "unknownCommandMessage").getObject("unknownCommandMessage", EmbedMessageConfigEntry.class);
+        this.noPermissionMessage = this.loadConfigEntry("permissions", "noPermissionMessage").getObject("noPermissionMessage", EmbedMessageConfigEntry.class);
+        this.blacklistedOrNotWhitelistedMessage = this.loadConfigEntry("permissions", "blacklistedOrNotWhitelistedMessage").getObject("blacklistedOrNotWhitelistedMessage", EmbedMessageConfigEntry.class);
 
         {
             try {

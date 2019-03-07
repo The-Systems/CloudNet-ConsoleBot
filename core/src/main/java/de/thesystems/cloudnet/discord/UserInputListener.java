@@ -3,6 +3,7 @@ package de.thesystems.cloudnet.discord;
  * Created by Mc_Ruben on 26.02.2019
  */
 
+import de.thesystems.cloudnet.discord.utility.MapBuilder;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -17,17 +18,20 @@ public class UserInputListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (event.getAuthor().isBot() || !discordBot.getProvider().getChannels().contains(event.getChannel().getIdLong()))
+        if (event.getAuthor().isBot() || !this.discordBot.getProvider().getChannels().contains(event.getChannel().getIdLong()))
             return;
 
-        if (!discordBot.getPermissionProvider().isUserAllowedToUseConsoleCommands(event.getAuthor())) {
-            event.getChannel().sendMessage(
+        if (!this.discordBot.getPermissionProvider().isUserAllowedToUseConsoleCommands(event.getAuthor())) {
+            if (this.discordBot.getBlacklistedOrNotWhitelistedMessage() != null) {
+                this.discordBot.getBlacklistedOrNotWhitelistedMessage().sendMessage(event.getChannel(), event.getAuthor());
+            }
+            /*event.getChannel().sendMessage(
                     new EmbedBuilder()
                             .setTitle("No Permissions")
                             .setDescription("You aren't allowed to use commands in the console.")
                             .setFooter(event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(), event.getAuthor().getAvatarUrl() != null ? event.getAuthor().getAvatarUrl() : event.getAuthor().getDefaultAvatarUrl())
                             .build()
-            ).queue();
+            ).queue();*/
             return;
         }
 
@@ -52,13 +56,16 @@ public class UserInputListener extends ListenerAdapter {
                 this.discordBot.dispatchCommand(new DiscordCommandSender(event.getMember(), this.discordBot), event.getMessage().getContentRaw());
             }
         } else {
-            event.getChannel().sendMessage(
+            if (this.discordBot.getNoPermissionMessage() != null) {
+                this.discordBot.getNoPermissionMessage().sendMessage(event.getChannel(), event.getAuthor(), new MapBuilder<String, String>().put("%command%", command.getName()).put("%permission%", command.getPermission()).getMap());
+            }
+            /*event.getChannel().sendMessage(
                     new EmbedBuilder()
                             .setTitle("No Permissions")
                             .setDescription("You aren't allowed to use that command, missing permission: " + command.getPermission())
                             .setFooter(event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(), event.getAuthor().getAvatarUrl() != null ? event.getAuthor().getAvatarUrl() : event.getAuthor().getDefaultAvatarUrl())
                             .build()
-            ).queue();
+            ).queue();*/
         }
     }
 }
