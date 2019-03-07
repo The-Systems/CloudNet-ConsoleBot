@@ -12,8 +12,6 @@ public class CloudNet2Bot extends CoreModule {
 
     private CloudNetDiscordBot discordBot;
 
-    private V2DiscordConsoleLogHandler consoleLogHandler;
-
     @Override
     public void onBootstrap() {
         this.discordBot = new V2CloudNetDiscordBot() {
