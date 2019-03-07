@@ -13,6 +13,7 @@ public class V2CommandDiscordConsole extends Command {
 
     public V2CommandDiscordConsole(CloudNetDiscordBot discordBot) {
         super("discord-console", "discord-console.command.dc", "dc");
+        this.description = "Reload the config of your bot";
         this.discordBot = discordBot;
     }
 
