@@ -89,6 +89,18 @@
       "name": "trove4j",
       "version": "3.0.3",
       "repo": "maven"
+    },
+    {
+      "group": "org.slf4j",
+      "name": "slf4j-api",
+      "version": "1.7.25",
+      "repo": "maven"
+    },
+    {
+      "group": "org.slf4j",
+      "name": "slf4j-nop",
+      "version": "1.7.25",
+      "repo": "maven"
     }
   ]
 }

@@ -14,7 +14,7 @@ public class CloudNet3Bot extends NodeCloudNetModule {
 
     private CloudNetDiscordBot discordBot;
 
-    @ModuleTask(event = ModuleLifeCycle.STARTED)
+    @ModuleTask(event = ModuleLifeCycle.LOADED)
     public void enableBot() {
         this.discordBot = new V3CloudNetDiscordBot() {
             @Override
@@ -25,6 +25,13 @@ public class CloudNet3Bot extends NodeCloudNetModule {
         this.discordBot.enableBot();
 
         this.registerCommand(new V3CommandDiscordConsole(this.discordBot));
+    }
+
+    @ModuleTask(event = ModuleLifeCycle.STARTED)
+    public void initConfig() {
+        if (this.discordBot != null) {
+            this.discordBot.reloadDiscordConfig();
+        }
     }
 
     @ModuleTask(event = ModuleLifeCycle.STOPPED)
