@@ -29,7 +29,7 @@
     </build>
 
     <properties>
-        <cloudnet3.version>3.0.0-PRE-2</cloudnet3.version>
+        <cloudnet3.version>3.0.0-PRE-3</cloudnet3.version>
         <cloudnet2.version>2.1.14</cloudnet2.version>
     </properties>
 
