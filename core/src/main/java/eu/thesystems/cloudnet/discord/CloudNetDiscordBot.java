@@ -42,7 +42,9 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                                             "Use \"help\" for a list of all commands!",
                                             Collections.singletonList(new EmbedMessageConfigEntry.Field("Example", "Value", true)),
                                             true,
-                                            "ff0000")
+                                            "ff0000",
+                                            false,
+                                            1000)
                             )
             )
             .append("presence",
@@ -67,7 +69,9 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                                             "You are not allowed to use **%command%**",
                                             Collections.singletonList(new EmbedMessageConfigEntry.Field("Missing Permission", "%permission%", true)),
                                             true,
-                                            "ff0000")
+                                            "ff0000",
+                                            false,
+                                            1000)
                             )
                             .append("blacklistedOrNotWhitelistedMessage",
                                     new EmbedMessageConfigEntry(
@@ -77,7 +81,10 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                                             "You are not allowed to use commands in the console",
                                             Collections.singletonList(new EmbedMessageConfigEntry.Field("Reason", "You are blacklisted/not whitelisted", true)),
                                             true,
-                                            "ff0000")
+                                            "ff0000",
+                                            false,
+                                            1000
+                                    )
                             )
             );
 
@@ -121,6 +128,8 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     public abstract DiscordCommandInfo getCommandFromLine(String line);
 
     public abstract void dispatchCommand(DiscordCommandSender sender, String line);
+
+    public abstract String getVersion();
 
     public void enableBot() {
         this.reloadDiscordConfig();

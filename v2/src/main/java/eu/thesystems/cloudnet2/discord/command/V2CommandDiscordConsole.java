@@ -13,21 +13,25 @@ public class V2CommandDiscordConsole extends Command {
 
     public V2CommandDiscordConsole(CloudNetDiscordBot discordBot) {
         super("discord-console", "discord-console.command.dc", "dc");
-        this.description = "Reload the config of your bot";
+        this.description = "Reload the config of your bot or see the version";
         this.discordBot = discordBot;
     }
 
     @Override
     public void onExecuteCommand(CommandSender sender, String[] args) {
-        if (args.length == 0 || (!args[0].equalsIgnoreCase("reload") && !args[0].equalsIgnoreCase("rl"))) {
-            sender.sendMessage("dc reload");
+        if (args.length == 0 || (!args[0].equalsIgnoreCase("reload") && !args[0].equalsIgnoreCase("rl") && !args[0].equalsIgnoreCase("version"))) {
+            sender.sendMessage("dc reload", "dc version");
             return;
         }
-        sender.sendMessage("Trying to reload the bot config...");
-        if (this.discordBot.reloadDiscordConfig()) {
-            sender.sendMessage("Successfully reloaded the bot config");
+        if (args[0].equalsIgnoreCase("version")) {
+            sender.sendMessage("Your version: " + this.discordBot.getVersion());
         } else {
-            sender.sendMessage("There was an error while trying to reload the bot config");
+            sender.sendMessage("Trying to reload the bot config...");
+            if (this.discordBot.reloadDiscordConfig()) {
+                sender.sendMessage("Successfully reloaded the bot config");
+            } else {
+                sender.sendMessage("There was an error while trying to reload the bot config");
+            }
         }
     }
 }

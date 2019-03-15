@@ -16,6 +16,11 @@ public class CloudNet2Bot extends CoreModule {
     public void onBootstrap() {
         this.discordBot = new V2CloudNetDiscordBot() {
             @Override
+            public String getVersion() {
+                return CloudNet2Bot.this.getModuleConfig().getVersion() + " by " + CloudNet2Bot.this.getModuleConfig().getAuthor();
+            }
+
+            @Override
             protected CloudNet getCloud() {
                 return CloudNet2Bot.this.getCloud();
             }

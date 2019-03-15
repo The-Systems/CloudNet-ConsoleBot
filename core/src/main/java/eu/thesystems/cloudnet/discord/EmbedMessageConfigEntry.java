@@ -6,13 +6,16 @@ package eu.thesystems.cloudnet.discord;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.requests.RestAction;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 @AllArgsConstructor
@@ -25,6 +28,8 @@ public class EmbedMessageConfigEntry {
     private Collection<Field> fields;
     private boolean footer;
     private String colorHex;
+    private boolean deleteAfterTime;
+    private long deletionMillis;
 
     public void sendMessage(MessageChannel channel, User receiver) {
         this.sendMessage(channel, receiver, null);
@@ -33,6 +38,7 @@ public class EmbedMessageConfigEntry {
     public void sendMessage(MessageChannel channel, User receiver, Map<String, String> replacements) {
         if (!this.enabled)
             return;
+        RestAction<Message> restAction = null;
         if (this.embed) {
             EmbedBuilder builder = new EmbedBuilder();
             if (this.title != null && !this.title.isEmpty()) {
@@ -54,12 +60,19 @@ public class EmbedMessageConfigEntry {
             if (receiver != null && this.footer) {
                 builder.setFooter(receiver.getName() + "#" + receiver.getDiscriminator(), receiver.getAvatarUrl() != null ? receiver.getAvatarUrl() : receiver.getDefaultAvatarUrl());
             }
-            channel.sendMessage(builder.build()).queue();
+            restAction = channel.sendMessage(builder.build());
         } else {
             if (this.title != null) {
-                channel.sendMessage(this.title).queue();
+                restAction = channel.sendMessage(this.title);
             } else if (this.description != null) {
-                channel.sendMessage(this.description).queue();
+                restAction = channel.sendMessage(this.description);
+            }
+        }
+        if (restAction != null) {
+            if (this.deleteAfterTime && this.deletionMillis > 0) {
+                restAction.queue(message -> message.delete().queueAfter(this.deletionMillis, TimeUnit.MILLISECONDS));
+            } else {
+                restAction.queue();
             }
         }
     }

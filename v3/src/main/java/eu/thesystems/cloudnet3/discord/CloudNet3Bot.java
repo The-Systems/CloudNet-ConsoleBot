@@ -18,6 +18,11 @@ public class CloudNet3Bot extends NodeCloudNetModule {
     public void enableBot() {
         this.discordBot = new V3CloudNetDiscordBot() {
             @Override
+            public String getVersion() {
+                return CloudNet3Bot.this.getModuleConfig().getVersion() + " by " + CloudNet3Bot.this.getModuleConfig().getAuthor();
+            }
+
+            @Override
             protected CloudNet getCloudNet() {
                 return CloudNet3Bot.this.getCloudNet();
             }

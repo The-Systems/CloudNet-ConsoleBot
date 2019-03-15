@@ -2,7 +2,7 @@
   "runtimeModule": true,
   "group": "eu.thesystems.cloudnet.consolebot",
   "name": "CloudNet-Console-Bot",
-  "version": "1.0",
+  "version": "1.5",
   "author": "derrop",
   "website": "https://nevercold.eu",
   "description": "CloudNet extension which prints the Console of your Node to your DiscordServer",
