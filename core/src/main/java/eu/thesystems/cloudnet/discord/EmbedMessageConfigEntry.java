@@ -13,7 +13,6 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

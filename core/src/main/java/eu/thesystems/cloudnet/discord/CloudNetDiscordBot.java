@@ -232,13 +232,16 @@ public abstract class CloudNetDiscordBot<LogEntry> {
         this.blacklistedOrNotWhitelistedMessage = this.loadConfigEntry("permissions", "blacklistedOrNotWhitelistedMessage").getObject("blacklistedOrNotWhitelistedMessage", EmbedMessageConfigEntry.class);
 
         {
-            try {
-                Game game = Game.of(Game.GameType.valueOf(this.loadConfigEntry("presence", "type").getString("type")), this.loadConfigEntry("presence", "text").getString("text"));
-                if (this.jda != null) {
-                    this.jda.getPresence().setGame(game);
+            String text = this.loadConfigEntry("presence", "text").getString("text");
+            if (text != null && !text.isEmpty()) {
+                try {
+                    Game game = Game.of(Game.GameType.valueOf(this.loadConfigEntry("presence", "type").getString("type")), text);
+                    if (this.jda != null) {
+                        this.jda.getPresence().setGame(game);
+                    }
+                } catch (Exception e) {
+                    System.err.println("An invalid GameType is provided in the config.json of the DiscordBot Module, available types: "+ Arrays.stream(Game.GameType.values()).map(Enum::toString).collect(Collectors.joining(", ")));
                 }
-            } catch (Exception e) {
-                System.err.println("An invalid GameType is provided in the config.json of the DiscordBot Module, available types: "+ Arrays.stream(Game.GameType.values()).map(Enum::toString).collect(Collectors.joining(", ")));
             }
         }
         return true;

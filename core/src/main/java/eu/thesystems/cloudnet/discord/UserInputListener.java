@@ -38,7 +38,7 @@ public class UserInputListener extends ListenerAdapter {
         DiscordCommandInfo command = this.discordBot.getCommandFromLine(event.getMessage().getContentRaw());
         if (command == null) {
             if (this.discordBot.getUnknownCommandMessage() != null) {
-                this.discordBot.getUnknownCommandMessage().sendMessage(event.getChannel(), event.getAuthor());
+                this.discordBot.getUnknownCommandMessage().sendMessage(event.getChannel(), event.getAuthor(), new MapBuilder<String, String>().put("%command%", event.getMessage().getContentRaw()).getMap());
             }
             return;
         }

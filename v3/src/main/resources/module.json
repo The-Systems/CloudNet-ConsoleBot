@@ -10,7 +10,7 @@
   "repos": [
     {
       "name": "jcenter",
-      "url": "http://jcenter.bintray.com/"
+      "url": "https://jcenter.bintray.com/"
     },
     {
       "name": "spring",
@@ -21,7 +21,7 @@
     {
       "group": "net.dv8tion",
       "name": "JDA",
-      "version": "3.8.1_450",
+      "version": "3.8.3_464",
       "repo": "jcenter"
     },
     {
