@@ -50,7 +50,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             .append("presence",
                     new SimpleJsonObject()
                             .append("type", Game.GameType.DEFAULT)
-                            .append("text", "with CloudNet v3 by Dytanic")
+                            .append("text", "with CloudNet v2/v3 by Dytanic, Panamo, Derrop and GiantTree")
             )
             .append("permissions",
                     new SimpleJsonObject()
