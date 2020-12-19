@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import eu.thesystems.cloudnet.discord.json.SimpleJsonObject;
 import lombok.Getter;
+import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -194,7 +195,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                         this.jda.shutdownNow();
                     }
                     try {
-                        JDABuilder builder = new JDABuilder.createDefault(token);
+                        JDABuilder builder = JDABuilder.createDefault(token);
                         //builder.setToken(token);
                         builder.setAutoReconnect(true);
                         builder
