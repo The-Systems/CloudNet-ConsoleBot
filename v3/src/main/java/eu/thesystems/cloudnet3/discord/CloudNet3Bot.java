@@ -16,6 +16,9 @@ public class CloudNet3Bot extends NodeCloudNetModule {
 
     @ModuleTask(event = ModuleLifeCycle.LOADED)
     public void enableBot() {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(getModuleWrapper().getClassLoader());
+
         this.discordBot = new V3CloudNetDiscordBot() {
             @Override
             public String getVersion() {
@@ -30,6 +33,8 @@ public class CloudNet3Bot extends NodeCloudNetModule {
         this.discordBot.enableBot();
 
         this.registerCommand(new V3CommandDiscordConsole(this.discordBot));
+
+        Thread.currentThread().setContextClassLoader(loader);
     }
 
     @ModuleTask(event = ModuleLifeCycle.STARTED)
