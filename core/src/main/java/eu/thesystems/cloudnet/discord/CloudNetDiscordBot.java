@@ -202,7 +202,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                                         onBotStart(event.getJDA());
                                     }
                                 });
-                        this.jda = builder.build();
+                        this.jda = builder.build().awaitReady();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
