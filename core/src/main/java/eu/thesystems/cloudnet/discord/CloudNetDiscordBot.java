@@ -194,8 +194,8 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                         this.jda.shutdownNow();
                     }
                     try {
-                        JDABuilder builder = new JDABuilder(AccountType.BOT);
-                        builder.setToken(token);
+                        JDABuilder builder = new JDABuilder.createDefault(token);
+                        //builder.setToken(token);
                         builder.setAutoReconnect(true);
                         builder
                                 .addEventListener(new ListenerAdapter() {
