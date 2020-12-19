@@ -9,13 +9,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import eu.thesystems.cloudnet.discord.json.SimpleJsonObject;
 import lombok.Getter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,7 +48,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             )
             .append("presence",
                     new SimpleJsonObject()
-                            .append("type", Game.GameType.DEFAULT)
+                            .append("type", Activity.ActivityType.DEFAULT)
                             .append("text", "with CloudNet v2/v3 by Dytanic, Panamo, Derrop and GiantTree")
             )
             .append("permissions",
@@ -157,7 +156,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     public void clearChannel(TextChannel channel, Consumer<TextChannel> updatedChannelConsumer) {
         long oldId = channel.getIdLong();
         channel.createCopy().queue(newChannel -> {
-            newChannel.getGuild().getController().modifyTextChannelPositions().selectPosition((TextChannel) newChannel).moveTo(channel.getPosition()).queue(aVoid -> {
+            newChannel.getGuild().modifyTextChannelPositions().selectPosition((TextChannel) newChannel).moveTo(channel.getPosition()).queue(aVoid -> {
                 channel.delete().queue(aVoid1 -> {
                     this.provider.getChannels().set(this.provider.getChannels().indexOf(oldId), newChannel.getIdLong());
 
@@ -194,11 +193,10 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                         this.jda.shutdownNow();
                     }
                     try {
-                        JDABuilder builder = new JDABuilder(AccountType.BOT);
-                        builder.setToken(token);
+                        JDABuilder builder = JDABuilder.createDefault(token);
                         builder.setAutoReconnect(true);
                         builder
-                                .addEventListener(new ListenerAdapter() {
+                                .addEventListeners(new ListenerAdapter() {
                                     @Override
                                     public void onReady(ReadyEvent event) {
                                         onBotStart(event.getJDA());
@@ -235,12 +233,12 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             String text = this.loadConfigEntry("presence", "text").getString("text");
             if (text != null && !text.isEmpty()) {
                 try {
-                    Game game = Game.of(Game.GameType.valueOf(this.loadConfigEntry("presence", "type").getString("type")), text);
+                    Activity game = Activity.of(Activity.ActivityType.valueOf(this.loadConfigEntry("presence", "type").getString("type")), text);
                     if (this.jda != null) {
-                        this.jda.getPresence().setGame(game);
+                        this.jda.getPresence().setActivity(game);
                     }
                 } catch (Exception e) {
-                    System.err.println("An invalid GameType is provided in the config.json of the DiscordBot Module, available types: "+ Arrays.stream(Game.GameType.values()).map(Enum::toString).collect(Collectors.joining(", ")));
+                    System.err.println("An invalid GameType is provided in the config.json of the DiscordBot Module, available types: "+ Arrays.stream(Activity.ActivityType.values()).map(Enum::toString).collect(Collectors.joining(", ")));
                 }
             }
         }
