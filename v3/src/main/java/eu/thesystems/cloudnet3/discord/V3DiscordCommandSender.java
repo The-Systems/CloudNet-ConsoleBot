@@ -4,12 +4,14 @@ package eu.thesystems.cloudnet3.discord;
  */
 
 import de.dytanic.cloudnet.command.ICommandSender;
+import de.dytanic.cloudnet.common.logging.ILogger;
 import eu.thesystems.cloudnet.discord.DiscordCommandSender;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class V3DiscordCommandSender implements ICommandSender {
 
+    private ILogger logger;
     private DiscordCommandSender sender;
 
     @Override

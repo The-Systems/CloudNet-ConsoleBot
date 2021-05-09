@@ -9,18 +9,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import eu.thesystems.cloudnet.discord.json.SimpleJsonObject;
 import lombok.Getter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
+import javax.security.auth.login.LoginException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -49,7 +55,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             )
             .append("presence",
                     new SimpleJsonObject()
-                            .append("type", Game.GameType.DEFAULT)
+                            .append("type", Activity.ActivityType.DEFAULT)
                             .append("text", "with CloudNet v3 by Dytanic")
             )
             .append("permissions",
@@ -157,7 +163,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     public void clearChannel(TextChannel channel, Consumer<TextChannel> updatedChannelConsumer) {
         long oldId = channel.getIdLong();
         channel.createCopy().queue(newChannel -> {
-            newChannel.getGuild().getController().modifyTextChannelPositions().selectPosition((TextChannel) newChannel).moveTo(channel.getPosition()).queue(aVoid -> {
+            newChannel.getGuild().modifyTextChannelPositions().selectPosition(newChannel).moveTo(channel.getPosition()).queue(aVoid -> {
                 channel.delete().queue(aVoid1 -> {
                     this.provider.getChannels().set(this.provider.getChannels().indexOf(oldId), newChannel.getIdLong());
 
@@ -179,6 +185,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     }
 
     private void onBotStart(JDA jda) {
+        this.jda = jda;
         jda.addEventListener(new UserInputListener(this));
     }
 
@@ -193,21 +200,16 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                     if (this.jda != null) {
                         this.jda.shutdownNow();
                     }
-                    try {
-                        JDABuilder builder = new JDABuilder(AccountType.BOT);
-                        builder.setToken(token);
-                        builder.setAutoReconnect(true);
-                        builder
-                                .addEventListener(new ListenerAdapter() {
-                                    @Override
-                                    public void onReady(ReadyEvent event) {
-                                        onBotStart(event.getJDA());
-                                    }
-                                });
-                        this.jda = builder.build();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    new Thread(() -> {
+                        try {
+                            this.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES)
+                                    .setAutoReconnect(true)
+                                    .build();
+                            this.onBotStart(this.jda);
+                        } catch (LoginException exception) {
+                            exception.printStackTrace();
+                        }
+                    }).start();
                 }
             } else {
                 System.err.println("Please provide the DiscordBot Token and the channelId for your console channel in the config.json in your DiscordBotModule!");
@@ -235,12 +237,12 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             String text = this.loadConfigEntry("presence", "text").getString("text");
             if (text != null && !text.isEmpty()) {
                 try {
-                    Game game = Game.of(Game.GameType.valueOf(this.loadConfigEntry("presence", "type").getString("type")), text);
+                    Activity activity = Activity.of(Activity.ActivityType.valueOf(this.loadConfigEntry("presence", "type").getString("type")), text);
                     if (this.jda != null) {
-                        this.jda.getPresence().setGame(game);
+                        this.jda.getPresence().setActivity(activity);
                     }
                 } catch (Exception e) {
-                    System.err.println("An invalid GameType is provided in the config.json of the DiscordBot Module, available types: "+ Arrays.stream(Game.GameType.values()).map(Enum::toString).collect(Collectors.joining(", ")));
+                    System.err.println("An invalid GameType is provided in the config.json of the DiscordBot Module, available types: " + Arrays.stream(Activity.ActivityType.values()).map(Enum::toString).collect(Collectors.joining(", ")));
                 }
             }
         }

@@ -5,8 +5,8 @@ package eu.thesystems.cloudnet.discord;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.Collection;
 import java.util.Objects;

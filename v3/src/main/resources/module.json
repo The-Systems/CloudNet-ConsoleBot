@@ -21,7 +21,7 @@
     {
       "group": "net.dv8tion",
       "name": "JDA",
-      "version": "3.8.3_464",
+      "version": "4.2.0_247",
       "repo": "jcenter"
     },
     {
@@ -53,24 +53,6 @@
       "name": "okio",
       "version": "1.13.0",
       "repo": "maven"
-    },
-    {
-      "group": "club.minnced",
-      "name": "opus-java",
-      "version": "1.0.2",
-      "repo": "spring"
-    },
-    {
-      "group": "club.minnced",
-      "name": "opus-java-api",
-      "version": "1.0.2",
-      "repo": "spring"
-    },
-    {
-      "group": "club.minnced",
-      "name": "opus-java-natives",
-      "version": "1.0.2",
-      "repo": "spring"
     },
     {
       "group": "org.apache.commons",

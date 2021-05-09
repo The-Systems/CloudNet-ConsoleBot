@@ -50,7 +50,7 @@ public abstract class V3CloudNetDiscordBot extends CloudNetDiscordBot<LogEntry> 
 
     @Override
     public void dispatchCommand(DiscordCommandSender sender, String line) {
-        getCloudNet().getCommandMap().dispatchCommand(new V3DiscordCommandSender(sender), line);
+        getCloudNet().getCommandMap().dispatchCommand(new V3DiscordCommandSender(getCloudNet().getLogger(), sender), line);
     }
 
     protected abstract CloudNet getCloudNet();

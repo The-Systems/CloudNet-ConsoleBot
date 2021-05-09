@@ -5,7 +5,7 @@ package eu.thesystems.cloudnet.discord;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 
 @Getter
 @AllArgsConstructor

@@ -6,7 +6,7 @@ package eu.thesystems.cloudnet3.discord;
 import de.dytanic.cloudnet.common.logging.AbstractLogHandler;
 import de.dytanic.cloudnet.common.logging.LogEntry;
 import eu.thesystems.cloudnet.discord.CloudNetDiscordBot;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class V3DiscordConsoleLogHandler extends AbstractLogHandler {
@@ -21,7 +21,7 @@ public class V3DiscordConsoleLogHandler extends AbstractLogHandler {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
     }
 
 }
