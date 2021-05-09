@@ -56,7 +56,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             .append("presence",
                     new SimpleJsonObject()
                             .append("type", Activity.ActivityType.DEFAULT)
-                            .append("text", "with CloudNet v3 by Dytanic")
+                            .append("text", "with CloudNet v2/v3 by Dytanic, juliarn, derrop and GiantTree")
             )
             .append("permissions",
                     new SimpleJsonObject()
