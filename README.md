@@ -1,4 +1,4 @@
-<img src="https://the-systems.eu/images/favicons/apple-touch-icon.png" width="60px" />
+<img src="https://cdn.the-systems.eu/icon-transparent.png" width="60px" />
 
 # CloudNet-ConsoleBot
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
