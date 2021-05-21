@@ -16,14 +16,18 @@
     {
       "name": "spring",
       "url": "http://repo.spring.io/libs-release/"
+    },
+    {
+      "name": "m2-dv8tion",
+      "url" :  "https://m2.dv8tion.net/releases"
     }
   ],
   "dependencies": [
     {
       "group": "net.dv8tion",
       "name": "JDA",
-      "version": "4.2.0_247",
-      "repo": "jcenter"
+      "version": "4.2.1_265",
+      "repo": "m2-dv8tion"
     },
     {
       "group": "com.google.code.findbugs",

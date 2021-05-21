@@ -37,7 +37,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
     private static final SimpleJsonObject DEFAULT_CONFIG = new SimpleJsonObject()
             .append("bot",
                     new SimpleJsonObject()
-                            .append("token", "your api token which you can get from https://discordapp.com/developers/applications")
+                            .append("token", "your api token which you can get from https://discord.com/developers/applications")
                             .append("consoleChannelIds", Collections.singleton(123456789))
                             .append("delay_between_queue_polls_ms", 750)
                             .append("unknownCommandMessage",
@@ -55,7 +55,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
             )
             .append("presence",
                     new SimpleJsonObject()
-                            .append("type", Activity.ActivityType.DEFAULT)
+                            .append("type", Activity.ActivityType.WATCHING)
                             .append("text", "with CloudNet v2/v3 by Dytanic, juliarn, derrop and GiantTree")
             )
             .append("permissions",
@@ -202,7 +202,7 @@ public abstract class CloudNetDiscordBot<LogEntry> {
                     }
                     new Thread(() -> {
                         try {
-                            this.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES)
+                            this.jda = JDABuilder.createDefault(token)
                                     .setAutoReconnect(true)
                                     .build();
                             this.onBotStart(this.jda);
