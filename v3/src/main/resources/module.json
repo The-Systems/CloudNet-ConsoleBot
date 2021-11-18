@@ -2,9 +2,9 @@
   "runtimeModule": true,
   "group": "eu.thesystems.cloudnet.consolebot",
   "name": "CloudNet-Console-Bot",
-  "version": "1.5",
+  "version": "1.8",
   "author": "derrop",
-  "website": "https://nevercold.eu",
+  "website": "https://the-systems.eu",
   "description": "CloudNet extension which prints the Console of your Node to your DiscordServer",
   "main": "eu.thesystems.cloudnet3.discord.CloudNet3Bot",
   "storesSensitiveData": true,
@@ -26,7 +26,7 @@
     {
       "group": "net.dv8tion",
       "name": "JDA",
-      "version": "4.2.1_265",
+      "version": "4.3.0_346",
       "repo": "m2-dv8tion"
     },
     {
