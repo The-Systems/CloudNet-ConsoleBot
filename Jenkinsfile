@@ -19,32 +19,6 @@ pipeline {
                 }
             }
         }
-
-        stage ('Deploy') {
-            when {
-                branch "master"
-            }
-
-            steps {
-                rtMavenDeployer (
-                        id: "maven-deployer",
-                        releaseRepo: "maven-releases",
-                        snapshotRepo: "maven-snapshots"
-                )
-                rtMavenResolver (
-                        id: "maven-resolver",
-                        releaseRepo: "release",
-                        snapshotRepo: "snapshot"
-                )
-                rtMavenRun (
-                        pom: 'pom.xml',
-                        goals: 'javadoc:javadoc javadoc:jar source:jar install -DskipTests',
-                        deployerId: "maven-deployer",
-                        resolverId: "maven-resolver"
-                )
-                step([$class: 'JavadocArchiver', javadocDir: 'target/site/apidocs', keepAll: false])
-            }
-        }
     }
 
     post {
