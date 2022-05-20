@@ -4,6 +4,19 @@
 
 <img src="https://cdn.the-systems.eu/icon-transparent-banner.png" width="300px" />
 
+-----
+
+<p style="color:#de0f0f">
+    Vielen Dank für die Nutzung des ConsoleBots.
+    Die Weiterentwicklung ist ab sofort beendet, der Support des ConsoleBots endet am 31.06.2022.
+</p>
+<p style="color:#de0f0f">
+    Thank you for using the ConsoleBot.
+    The further development is finished as of now, the support of the ConsoleBot ends on 31.06.2022.
+</p>
+
+-----
+
 # <b>CloudNet-ConsoleBot</b>
 
 ### A ConsoleBot for CloudNet v2 and v3
